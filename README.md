@@ -74,9 +74,10 @@ Removie는 **재개봉 영화 알림 서비스** 입니다.
 | **GET**     | `/cinema/{movieCode}`          | `movieCode` (PathVariable)                      | 대상 영화에 상영관 리스트를 불러옵니다.       |
 | **GET**     | `/movie/info/sync`             | `version` (RequestParam)                        | 버전에 따른 동기화에 필요한 데이터를 불러 옵니다. |
 | **GET**     | `/movie/info`                  | `movieCode` (RequestParam, List)                | 영화에 정보들을 불러 옵니다.             |
+| **GET**     | `/movie/info/{movieTitle}`     | `movieTitle` (PathVariable)                     | 영화 제목에 맞는 영화 정보들을 불러 옵니다.             |
 | **GET**     | `/movie/info/page`             | `offset` (RequestParam), `limit` (RequestParam) | 랭킹 구간에 영화 정보들을 불러 옵니다.       |
 | **GET**     | `/movie/info/date/{movieCode}` | `movieCode` (PathVariable)                      | 대상 영화에 상영 날짜를 불러 옵니다.        |
-| **POST**    | `/update`                      | 없음                                              | 업데이트 트리거 포인트 입니다.            |
+| **POST**    | `/update`                      | 없음                                            | 업데이트 트리거 포인트 입니다.            |
 
 
 
