@@ -21,4 +21,13 @@ public class MovieDataMapper {
                 .collect(Collectors.toList());
 
     }
+    
+    public static MovieDataResponse getMovieDataResponse(MovieDataEntity movieDataEntity){
+        return  MovieDataResponse.builder()
+                        .info(movieDataEntity.getInfo())
+                        .title(movieDataEntity.getTitle())
+                        .movieCode(movieDataEntity.getMovieCode())
+                        .posterIMG(AWS.AWS_S3_URL.getValue() + movieDataEntity.getMovieCode())
+                        .build();
+    }
 }

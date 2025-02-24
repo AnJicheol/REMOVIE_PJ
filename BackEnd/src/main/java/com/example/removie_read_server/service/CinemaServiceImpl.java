@@ -26,6 +26,6 @@ public class CinemaServiceImpl implements CinemaService{
     public CinemaDTO getCinemaList(String movieCode){
         return cinemaRepository.findCinemaEntityByMovieCode(movieCode)
                 .map(cinemaEntity -> new CinemaDTO(cinemaEntity.getCinemaDataList()))
-                .orElseThrow(() -> new MovieCodeInvalidException(MovieErrorCode.MOVIE_CODE_INVALID));
+                .orElseThrow(() -> new MovieInvalidException(MovieErrorCode.MOVIE_CODE_INVALID));
     }
 }

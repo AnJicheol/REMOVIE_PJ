@@ -32,6 +32,12 @@ public class MovieInfoController {
 
         return ResponseEntity.ok(movieService.getMovieInfoList(offset, limit));
     }
+
+    @GetMapping("{movieTitle}")
+    public ResponseEntity<MovieDataResponse> getMovieInfoByTitle(@PathVariable String movieTitle) {
+
+        return ResponseEntity.ok(movieService.getMovieInfo(movieTitle));
+    }
 }
 
 

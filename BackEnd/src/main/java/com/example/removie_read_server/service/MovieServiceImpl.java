@@ -4,11 +4,11 @@ import com.example.removie_read_server.Entity.MovieDataEntity;
 import com.example.removie_read_server.dto.MovieDataResponse;
 import com.example.removie_read_server.errorCode.MovieErrorCode;
 import com.example.removie_read_server.exception.ListSizeExceededException;
-import com.example.removie_read_server.exception.MovieCodeInvalidException;
+import com.example.removie_read_server.exception.MovieInvalidException;
 import com.example.removie_read_server.mapper.MovieDataMapper;
 import com.example.removie_read_server.errorCode.PageErrorCode;
 import com.example.removie_read_server.exception.PageInvalidException;
-import com.example.removie_read_server.repository.MovieRepository;
+import com.example.removie_read_server.service.manager.MovieManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
@@ -23,14 +23,14 @@ import java.util.List;
 @Service
 public class MovieServiceImpl implements MovieService{
     private final static int SUPPORTED_SEARCH_SIZE = 300;
-    private final static String PAGE_SORT_PIVOT = "Ranking";
+    private final static String PAGE_SORT_PIVOT = "ranking";
 
-    private final MovieRepository movieRepository;
+    private final MovieManager movieManager;
     private final ReleaseService releaseService;
 
     @Autowired
-    public MovieServiceImpl(MovieRepository movieRepository,  ReleaseService releaseService) {
-        this.movieRepository = movieRepository;
+    public MovieServiceImpl(MovieManager movieManager, ReleaseService releaseService) {
+        this.movieManager = movieManager;
         this.releaseService = releaseService;
     }
 
@@ -38,7 +38,7 @@ public class MovieServiceImpl implements MovieService{
     @Transactional(readOnly = true)
     public List<MovieDataResponse> getMovieInfoList(List<String> movieCodeList) {
         validateListSize(movieCodeList);
-        List<MovieDataEntity> movieDataEntityList = movieRepository.findAllByMovieCodeIn(movieCodeList);
+        List<MovieDataEntity> movieDataEntityList = movieManager.getMovieEntity(movieCodeList);
         validateMovieDataEntity(movieDataEntityList);
 
         return createResponse(movieDataEntityList);
@@ -52,6 +52,15 @@ public class MovieServiceImpl implements MovieService{
         return createResponse(movieDataEntityList);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public MovieDataResponse getMovieInfo(String movieTitle){
+        MovieDataEntity movieEntity = movieManager.getMovieEntity(movieTitle)
+                .orElseThrow(() -> new MovieInvalidException(MovieErrorCode.MOVIE_TITLE_INVALID));
+
+        return createResponse(movieEntity);
+    }
+
     private void validateListSize(List<String> movieCodeList){
         if(movieCodeList.size() >= SUPPORTED_SEARCH_SIZE){
             throw new ListSizeExceededException(MovieErrorCode.MOVIE_CODE_SIZE_LARGE.getMessage());
@@ -60,7 +69,7 @@ public class MovieServiceImpl implements MovieService{
 
     private void validateMovieDataEntity(List<MovieDataEntity> movieDataEntityList){
         if(movieDataEntityList.isEmpty()){
-            throw new MovieCodeInvalidException(MovieErrorCode.MOVIE_CODE_INVALID);
+            throw new MovieInvalidException(MovieErrorCode.MOVIE_CODE_INVALID);
         }
     }
 

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class MovieCodeExceptionHandler {
 
-    @ExceptionHandler(MovieCodeInvalidException.class)
-    public ResponseEntity<MovieCodeErrorResponse> handleMovieCodeInvalidException(MovieCodeInvalidException ex){
+    @ExceptionHandler(MovieInvalidException.class)
+    public ResponseEntity<MovieCodeErrorResponse> handleMovieCodeInvalidException(MovieInvalidException ex){
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)

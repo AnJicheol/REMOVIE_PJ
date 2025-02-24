@@ -23,4 +23,15 @@ public interface ReleaseRepository extends JpaRepository<ReleaseEntity, Long> {
     @Query("SELECT r.movieCode FROM ReleaseEntity r WHERE r.version = (SELECT MAX(r2.version) FROM ReleaseEntity r2) " +
             "AND r.movieCode IN (SELECT rm.movieCode FROM ReMovieEntity rm)")
     List<String> findLatestRemovie();
+
+
+     @Query("""
+    SELECT m
+    FROM ReleaseEntity r
+    JOIN MovieDataEntity m ON r.movieCode = m.movieCode
+    WHERE r.version = (
+        SELECT MAX(rv.version) FROM ReleaseEntity rv
+    )
+    """)
+    List<MovieDataEntity> findAllMovieInfoByPage(Pageable pageable);
 }

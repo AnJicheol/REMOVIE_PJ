@@ -12,6 +12,7 @@ import org.springframework.retry.annotation.EnableRetry;
 
 @EnableRetry
 @EnableCaching
+@EnableScheduling
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @SpringBootApplication
 public class RemovieApplication {

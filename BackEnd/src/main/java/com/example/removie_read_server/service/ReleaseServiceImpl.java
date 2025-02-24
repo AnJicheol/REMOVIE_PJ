@@ -4,7 +4,6 @@ package com.example.removie_read_server.service;
 import com.example.removie_read_server.Entity.MovieDataEntity;
 import com.example.removie_read_server.dto.ReleaseDTO;
 import com.example.removie_read_server.dto.ReleaseProjection;
-import com.example.removie_read_server.repository.ReleaseJoinRepository;
 import com.example.removie_read_server.repository.ReleaseRepository;
 import com.example.removie_read_server.service.manager.ReMovieManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +20,11 @@ import java.util.Set;
 @Service
 public class ReleaseServiceImpl implements ReleaseService{
     private final ReleaseRepository releaseRepository;
-    private final ReleaseJoinRepository releaseJoinRepository;
     private final ReMovieManager reMovieManager;
 
     @Autowired
-    public ReleaseServiceImpl(ReleaseRepository releaseRepository, ReleaseJoinRepository releaseJoinRepository, ReMovieManager reMovieManager) {
+    public ReleaseServiceImpl(ReleaseRepository releaseRepository, ReMovieManager reMovieManager) {
         this.releaseRepository = releaseRepository;
-        this.releaseJoinRepository = releaseJoinRepository;
         this.reMovieManager = reMovieManager;
     }
 
@@ -46,7 +43,7 @@ public class ReleaseServiceImpl implements ReleaseService{
     @Override
     @Transactional(readOnly = true)
     public List<MovieDataEntity> getMovieDataByReleasePage(Pageable pageable) {
-        return releaseJoinRepository.findAllMovieInfoByPage(pageable);
+        return releaseRepository.findAllMovieInfoByPage(pageable);
     }
 
     @Override

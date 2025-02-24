@@ -30,7 +30,9 @@ public class SecurityConfig {
                         .requestMatchers("/update/**").access(ipAddressAuthorization()) 
                         .anyRequest().authenticated()
                 )
-                .csrf(AbstractHttpConfigurer::disable);
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable);
 
         return http.build();
     }

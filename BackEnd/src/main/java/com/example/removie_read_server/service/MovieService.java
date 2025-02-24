@@ -8,4 +8,5 @@ import java.util.List;
 public interface MovieService {
     List<MovieDataResponse> getMovieInfoList(List<String> movieCodeList);
     List<MovieDataResponse> getMovieInfoList(int offset, int limit);
+    MovieDataResponse getMovieInfo(String movieTitle);
 }

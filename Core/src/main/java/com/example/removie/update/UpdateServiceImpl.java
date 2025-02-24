@@ -1,12 +1,11 @@
 package com.example.removie.update;
 
-
 import com.example.removie.update.updateCommand.ChangeCommandBundle;
 import com.example.removie.update.updateCommand.factory.CommandManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
+import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +18,8 @@ import org.springframework.stereotype.Service;
  * @version 1.0
  */
 @Service
-public class UpdateServiceImpl implements UpdateService, ApplicationRunner {
+@Endpoint(id = "run-update")
+public class UpdateServiceImpl implements UpdateService{
     private final Logger logger = LoggerFactory.getLogger(UpdateServiceImpl.class);
 
     private final CommandManagerFactory commandManagerFactory;
@@ -36,7 +36,9 @@ public class UpdateServiceImpl implements UpdateService, ApplicationRunner {
     }
 
 
-
+    /**
+     * {@link com.example.removie.aws.LambdaHandler} 에 의해 실행되며 전체 프로세스가 시작되는 메서드입니다.
+     */
     @Override
     public void runUpdate(){
         movieUpdate();
@@ -50,6 +52,13 @@ public class UpdateServiceImpl implements UpdateService, ApplicationRunner {
         logger.info("Scheduled run");
         runUpdate();
     }
+
+    @ReadOperation
+    public void actuatorUpdate() {
+        logger.info("actuator run");
+        runUpdate();
+    }
+
 
     private void movieUpdate(){
         try{
@@ -81,11 +90,4 @@ public class UpdateServiceImpl implements UpdateService, ApplicationRunner {
                 """, e.getMessage(), e);
     }
 
-    @Override
-    public void run(ApplicationArguments args){
-        if (args.containsOption("run")) {
-            logger.info("CLI RUN");
-            runUpdate();
-        }
-    }
 }
