@@ -30,7 +30,7 @@ public class AWSAWSMovieIMGURLServiceImpl implements AWSMovieIMGURLService {
     private final Logger logger = LoggerFactory.getLogger(AWSAWSMovieIMGURLServiceImpl.class);
 
     private final KOBISMovieIMGUriParser kobisMovieIMGUriParser;
-    private final com.example.removie.aws.s3.AWSS3Uploader AWSS3Uploader;
+    private final AWSS3Uploader AWSS3Uploader;
 
 
     @Autowired
