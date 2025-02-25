@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("!test")
 public class AmazonS3Config {
 
     @Value("${aws.s3.access-key}")
